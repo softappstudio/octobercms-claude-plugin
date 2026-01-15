@@ -1,8 +1,8 @@
 {
-  "name": "octobercms-marketplace",
+  "name": "softappstudio",
   "description": "OctoberCMS development tools for Claude Code",
   "owner": {
-    "name": "OctoberCMS Community"
+    "name": "Soft App Studio"
   },
   "plugins": [
     {
