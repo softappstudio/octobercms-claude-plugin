@@ -3,15 +3,8 @@ description: Initialize OctoberCMS development environment - select version and 
 allowed-tools: Bash, Write, Read
 ---
 
-# OctoberCMS Setup
+Your first response to the user MUST start with this exact banner (no tool calls before this):
 
-## Step 0: Display Welcome Banner (REQUIRED - DO THIS FIRST)
-
-**CRITICAL: You MUST output this banner IMMEDIATELY before doing anything else. Do NOT run any bash commands or tools until this banner is displayed to the user.**
-
-Output this exact text to the user now:
-
-```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                                                                   ┃
 ┃   ███████  ██████  ███████ ████████  █████  ██████  ██████       ┃
@@ -25,9 +18,10 @@ Output this exact text to the user now:
 ┃   🌐 www.softappstudio.com                                        ┃
 ┃                                                                   ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-```
 
-After displaying the banner, proceed with setup:
+# OctoberCMS Setup
+
+After displaying the banner above, proceed with the setup steps:
 
 ## Step 1: Detect Existing Configuration
 
