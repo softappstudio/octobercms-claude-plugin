@@ -5,30 +5,26 @@ allowed-tools: Bash, Write, Read
 
 # OctoberCMS Setup
 
-## Step 1: Display Banner and Check Configuration
+**IMPORTANT: Your very first response MUST be the banner below as plain text. Do NOT call any tools before outputting this banner.**
 
-Run this command FIRST to display the welcome banner and check for existing configuration:
-```bash
-cat << 'BANNER'
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃                                                                   ┃
-┃   ███████  ██████  ███████ ████████  █████  ██████  ██████       ┃
-┃   ██      ██    ██ ██         ██    ██   ██ ██   ██ ██   ██      ┃
-┃   ███████ ██    ██ █████      ██    ███████ ██████  ██████       ┃
-┃        ██ ██    ██ ██         ██    ██   ██ ██      ██           ┃
-┃   ███████  ██████  ██         ██    ██   ██ ██      ██           ┃
-┃                        S T U D I O                               ┃
-┃                                                                   ┃
-┃   🎃 OctoberCMS Development Toolkit                               ┃
-┃   🌐 www.softappstudio.com                                        ┃
-┃                                                                   ┃
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-BANNER
-if [ -f .claude/octobercms-config.json ]; then echo "EXISTING_CONFIG"; cat .claude/octobercms-config.json; else echo "NO_CONFIG"; fi
+```
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  SOFTAPP STUDIO                         ┃
+┃  🎃 OctoberCMS Development Toolkit      ┃
+┃  🌐 www.softappstudio.com               ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 ```
 
-If output shows "EXISTING_CONFIG", display current settings and ask if they want to reconfigure.
-If output shows "NO_CONFIG", proceed to version selection.
+Output that banner first, then proceed to Step 1.
+
+## Step 1: Check Configuration
+
+```bash
+cat .claude/octobercms-config.json 2>/dev/null || echo "NO_CONFIG"
+```
+
+If "EXISTING_CONFIG" found, show settings and ask if they want to reconfigure.
+If "NO_CONFIG", proceed to version selection.
 
 ## Step 2: Version Selection
 
