@@ -3,8 +3,13 @@ description: Initialize OctoberCMS development environment - select version and 
 allowed-tools: Bash, Write, Read
 ---
 
-Your first response to the user MUST start with this exact banner (no tool calls before this):
+# OctoberCMS Setup
 
+## Step 1: Display Banner and Check Configuration
+
+Run this command FIRST to display the welcome banner and check for existing configuration:
+```bash
+cat << 'BANNER'
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                                                                   ┃
 ┃   ███████  ██████  ███████ ████████  █████  ██████  ██████       ┃
@@ -18,19 +23,12 @@ Your first response to the user MUST start with this exact banner (no tool calls
 ┃   🌐 www.softappstudio.com                                        ┃
 ┃                                                                   ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
-# OctoberCMS Setup
-
-After displaying the banner above, proceed with the setup steps:
-
-## Step 1: Detect Existing Configuration
-
-First, check if there's an existing configuration:
-```bash
-cat .claude/octobercms-config.json 2>/dev/null || echo "NO_CONFIG"
+BANNER
+if [ -f .claude/octobercms-config.json ]; then echo "EXISTING_CONFIG"; cat .claude/octobercms-config.json; else echo "NO_CONFIG"; fi
 ```
 
-If configuration exists, show current settings and ask if they want to reconfigure.
+If output shows "EXISTING_CONFIG", display current settings and ask if they want to reconfigure.
+If output shows "NO_CONFIG", proceed to version selection.
 
 ## Step 2: Version Selection
 
