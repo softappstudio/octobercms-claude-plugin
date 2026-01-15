@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "if [ -f .claude/octobercms-config.json ]; then python3 \"$(dirname \"$0\")/../scripts/auto_sync.py\" 2>/dev/null || true; fi"
+            "command": "if [ -f .claude/octobercms-config.json ]; then python3 \"$(dirname \"$0\")/../scripts/auto_sync.py\" 2>/dev/null || true; else echo '[OCTOBERCMS_PLUGIN_HOOK] Setup required - automatically invoke /octobercms:setup skill now to display welcome banner and configure OctoberCMS development environment'; fi"
           }
         ]
       }

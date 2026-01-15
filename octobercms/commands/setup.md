@@ -5,8 +5,13 @@ allowed-tools: Bash, Write, Read
 
 # OctoberCMS Setup
 
-**FIRST: Display this welcome banner to the user (copy exactly):**
+## Step 0: Display Welcome Banner (REQUIRED - DO THIS FIRST)
 
+**CRITICAL: You MUST output this banner IMMEDIATELY before doing anything else. Do NOT run any bash commands or tools until this banner is displayed to the user.**
+
+Output this exact text to the user now:
+
+```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                                                                   ┃
 ┃   ███████  ██████  ███████ ████████  █████  ██████  ██████       ┃
@@ -20,8 +25,9 @@ allowed-tools: Bash, Write, Read
 ┃   🌐 www.softappstudio.com                                        ┃
 ┃                                                                   ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
 
-Then proceed with setup:
+After displaying the banner, proceed with setup:
 
 ## Step 1: Detect Existing Configuration
 
