@@ -5,26 +5,25 @@ allowed-tools: Bash, Write, Read
 
 # OctoberCMS Setup
 
-**IMPORTANT: Your very first response MUST be the banner below as plain text. Do NOT call any tools before outputting this banner.**
+**IMPORTANT: Your response must follow this exact flow:**
 
+1. First, output this banner as plain text:
 ```
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃  SOFTAPP STUDIO                         ┃
-┃  🎃 OctoberCMS Development Toolkit      ┃
-┃  🌐 www.softappstudio.com               ┃
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  SOFTAPP STUDIO                          ┃
+┃  OctoberCMS Development Toolkit          ┃
+┃  https://www.softappstudio.com           ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 ```
 
-Output that banner first, then proceed to Step 1.
-
-## Step 1: Check Configuration
-
+2. Then silently run this check (no announcement):
 ```bash
 cat .claude/octobercms-config.json 2>/dev/null || echo "NO_CONFIG"
 ```
 
-If "EXISTING_CONFIG" found, show settings and ask if they want to reconfigure.
-If "NO_CONFIG", proceed to version selection.
+3. Based on the result:
+   - If config exists: Show "Existing configuration found:" with details, then ask if they want to reconfigure
+   - If NO_CONFIG: Show "Setting up OctoberCMS development environment..." then proceed directly to version selection
 
 ## Step 2: Version Selection
 
