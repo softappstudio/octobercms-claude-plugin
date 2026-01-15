@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo 'HOOK EXECUTED' >> /tmp/october-test.txt"
+            "command": "if [ -f .claude/octobercms-config.json ]; then python3 \"$(dirname \"$0\")/../scripts/auto_sync.py\" 2>/dev/null || true; fi"
           }
         ]
       }

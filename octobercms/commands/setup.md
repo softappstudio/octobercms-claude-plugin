@@ -5,12 +5,26 @@ allowed-tools: Bash, Write, Read
 
 # OctoberCMS Setup
 
-Guide the user through setting up their OctoberCMS development environment.
+First, display the welcome banner:
+```
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                                                                   ┃
+┃   ███████  ██████  ███████ ████████  █████  ██████  ██████       ┃
+┃   ██      ██    ██ ██         ██    ██   ██ ██   ██ ██   ██      ┃
+┃   ███████ ██    ██ █████      ██    ███████ ██████  ██████       ┃
+┃        ██ ██    ██ ██         ██    ██   ██ ██      ██           ┃
+┃   ███████  ██████  ██         ██    ██   ██ ██      ██           ┃
+┃                        S T U D I O                               ┃
+┃                                                                   ┃
+┃   🎃 OctoberCMS Development Toolkit                               ┃
+┃   🌐 www.softappstudio.com                                        ┃
+┃                                                                   ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
 
 ## Step 1: Detect Existing Configuration
 
 First, check if there's an existing configuration:
-
 ```bash
 cat .claude/octobercms-config.json 2>/dev/null || echo "NO_CONFIG"
 ```
@@ -33,7 +47,6 @@ Wait for user response. Accept formats like "4", "4.x", "3", "3.x", etc.
 ## Step 3: Clone Documentation
 
 Based on the selected version, clone the appropriate documentation branch:
-
 ```bash
 # Create docs directory
 mkdir -p .claude/octobercms-docs
@@ -68,7 +81,6 @@ Ask the user about automatic documentation updates:
 ## Step 5: Save Configuration
 
 Create the configuration file:
-
 ```bash
 mkdir -p .claude
 cat > .claude/octobercms-config.json << 'EOF'
@@ -105,6 +117,6 @@ Confirm setup completion with:
 ✅ OctoberCMS ${VERSION}.x environment configured!
 
 📁 Documentation: .claude/octobercms-docs/${VERSION}.x/
-🔄 Run /sync-docs to update documentation
+🔄 Auto-sync: Enabled (every 7 days)
 ❓ Run /october help [topic] to search docs
 ```
