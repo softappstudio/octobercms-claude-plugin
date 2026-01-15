@@ -1,1 +1,0 @@
-# octobercms-claude-plugin

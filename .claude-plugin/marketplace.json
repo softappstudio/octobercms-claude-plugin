@@ -1,0 +1,14 @@
+{
+  "name": "octobercms-marketplace",
+  "description": "OctoberCMS development tools for Claude Code",
+  "owner": {
+    "name": "OctoberCMS Community"
+  },
+  "plugins": [
+    {
+      "name": "octobercms",
+      "source": "./octobercms",
+      "description": "OctoberCMS development toolkit with version-specific documentation and skills"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "hooks": [
+    {
+      "event": "PostSessionStart",
+      "description": "Auto-check and sync OctoberCMS documentation if outdated",
+      "command": "python3 \"$(dirname \"$0\")/../scripts/auto_sync.py\" 2>/dev/null || true",
+      "timeout": 20000
+    }
+  ]
+}
