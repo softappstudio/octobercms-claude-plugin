@@ -1,10 +1,11 @@
 {
-  "hooks": [
-    {
-      "event": "PostSessionStart",
-      "description": "Auto-check and sync OctoberCMS documentation if outdated, or prompt for setup",
-      "command": "if [ -f .claude/octobercms-config.json ]; then python3 \"$(dirname \"$0\")/../scripts/auto_sync.py\" 2>/dev/null || true; else echo ''; echo '┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓'; echo '┃                                                                   ┃'; echo '┃   ███████  ██████  ███████ ████████  █████  ██████  ██████       ┃'; echo '┃   ██      ██    ██ ██         ██    ██   ██ ██   ██ ██   ██      ┃'; echo '┃   ███████ ██    ██ █████      ██    ███████ ██████  ██████       ┃'; echo '┃        ██ ██    ██ ██         ██    ██   ██ ██      ██           ┃'; echo '┃   ███████  ██████  ██         ██    ██   ██ ██      ██           ┃'; echo '┃                        S T U D I O                               ┃'; echo '┃                                                                   ┃'; echo '┃   🎃 OctoberCMS Development Toolkit                               ┃'; echo '┃   🌐 www.softappstudio.com                                        ┃'; echo '┃                                                                   ┃'; echo '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'; echo ''; echo '  👉 Run /setup to configure your OctoberCMS version'; echo ''; fi",
-      "timeout": 20000
-    }
-  ]
+  "hooks": {
+    "PostSessionStart": [
+      {
+        "description": "Auto-check and sync OctoberCMS documentation if outdated, or prompt for setup",
+        "command": "if [ -f .claude/octobercms-config.json ]; then python3 \"$(dirname \"$0\")/../scripts/auto_sync.py\" 2>/dev/null || true; else echo ''; echo '┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓'; echo '┃                                                                   ┃'; echo '┃   ███████  ██████  ███████ ████████  █████  ██████  ██████       ┃'; echo '┃   ██      ██    ██ ██         ██    ██   ██ ██   ██ ██   ██      ┃'; echo '┃   ███████ ██    ██ █████      ██    ███████ ██████  ██████       ┃'; echo '┃        ██ ██    ██ ██         ██    ██   ██ ██      ██           ┃'; echo '┃   ███████  ██████  ██         ██    ██   ██ ██      ██           ┃'; echo '┃                        S T U D I O                               ┃'; echo '┃                                                                   ┃'; echo '┃   🎃 OctoberCMS Development Toolkit                               ┃'; echo '┃   🌐 www.softappstudio.com                                        ┃'; echo '┃                                                                   ┃'; echo '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'; echo ''; echo '  👉 Run /setup to configure your OctoberCMS version'; echo ''; fi",
+        "timeout": 20000
+      }
+    ]
+  }
 }
