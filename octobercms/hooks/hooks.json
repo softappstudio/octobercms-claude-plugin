@@ -1,24 +1,13 @@
 {
-  "description": "OctoberCMS development hooks",
+  "description": "OctoberCMS documentation auto-sync",
   "hooks": {
-    "Setup": [
+    "SessionStart": [
       {
         "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "echo 'Setup hook fired' >> /tmp/octobercms_hook.log; echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"[OCTOBERCMS_PLUGIN_HOOK] Setup required - automatically invoke /octobercms:setup skill now to display welcome banner and configure OctoberCMS development environment\"}}'"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "matcher": "startup",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo 'SessionStart startup hook fired' >> /tmp/octobercms_hook.log; if [ -f .claude/octobercms-config.json ]; then python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/auto_sync.py\" 2>/dev/null || true; else echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"[OCTOBERCMS_PLUGIN_HOOK] Setup required - automatically invoke /octobercms:setup skill now to display welcome banner and configure OctoberCMS development environment\"}}'; fi"
+            "command": "if [ -f .claude/octobercms-config.json ]; then python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/auto_sync.py\"; fi"
           }
         ]
       }
