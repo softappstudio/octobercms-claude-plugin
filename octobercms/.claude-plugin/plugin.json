@@ -1,7 +1,7 @@
 {
   "name": "octobercms",
   "description": "OctoberCMS development toolkit - version-specific documentation and best practices for building plugins and themes",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "SoftAppStudio"
   },
