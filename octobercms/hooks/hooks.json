@@ -3,7 +3,7 @@
   "hooks": {
     "Setup": [
       {
-        "matcher": "init",
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
@@ -14,7 +14,7 @@
     ],
     "SessionStart": [
       {
-        "matcher": "startup",
+        "matcher": "",
         "hooks": [
           {
             "type": "command",
