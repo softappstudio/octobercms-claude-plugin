@@ -1,23 +1,24 @@
 {
+  "description": "OctoberCMS development hooks",
   "hooks": {
     "Setup": [
       {
-        "matcher": "",
+        "matcher": "init",
         "hooks": [
           {
             "type": "command",
-            "command": "echo '[OCTOBERCMS_PLUGIN_HOOK] Invoke /octobercms:setup skill now to configure OctoberCMS development environment'"
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"[SYSTEM HOOK] OctoberCMS plugin setup requested. You MUST invoke /octobercms:setup skill now to configure the development environment.\"}}'"
           }
         ]
       }
     ],
     "SessionStart": [
       {
-        "matcher": "",
+        "matcher": "startup",
         "hooks": [
           {
             "type": "command",
-            "command": "if [ -f .claude/octobercms-config.json ]; then python3 \"$(dirname \"$0\")/../scripts/auto_sync.py\" 2>/dev/null || true; else echo '[OCTOBERCMS_PLUGIN_HOOK] OctoberCMS not configured. Run claude --init or /octobercms:setup to set up.'; fi"
+            "command": "if [ -f .claude/octobercms-config.json ]; then python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/auto_sync.py\" 2>/dev/null || true; else echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"[SYSTEM HOOK] OctoberCMS plugin is installed but not configured for this project. Run /octobercms:setup to set up.\"}}'; fi"
           }
         ]
       }
