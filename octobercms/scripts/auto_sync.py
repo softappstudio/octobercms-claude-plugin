@@ -4,6 +4,8 @@ OctoberCMS Auto-Sync
 
 Automatically checks for documentation updates on session start.
 Configurable via .claude/octobercms-config.json
+
+Docs are stored GLOBALLY at ~/.claude/octobercms-docs/ (shared across all projects).
 """
 
 import json
@@ -12,8 +14,12 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
+# Per-project config
 CONFIG_FILE = ".claude/octobercms-config.json"
-DOCS_PATH = ".claude/octobercms-docs"
+
+# Global docs location (shared across all projects)
+GLOBAL_DOCS_PATH = Path.home() / ".claude" / "octobercms-docs"
+
 REPO_URL = "https://github.com/octobercms/docs.git"
 BRANCH = "develop"
 
@@ -55,7 +61,7 @@ def get_remote_hash():
 
 def get_local_hash():
     """Get the stored local commit hash."""
-    hash_file = Path(DOCS_PATH) / ".git-hash"
+    hash_file = GLOBAL_DOCS_PATH / ".git-hash"
     if hash_file.exists():
         return hash_file.read_text().strip()
     return None
@@ -77,105 +83,63 @@ def should_check_updates(config):
 
 
 def do_sync(config):
-    """Perform the actual sync operation."""
+    """Perform the actual sync operation (all versions globally)."""
     import shutil
     import tempfile
-    
-    version = config["version"].replace(".x", "")
-    
-    print(f"📥 Syncing OctoberCMS {version}.x documentation...")
-    
+
+    print(f"📥 Syncing OctoberCMS documentation (all versions)...")
+
     try:
         with tempfile.TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir) / "docs"
-            
+
             # Clone with depth 1
             result = subprocess.run(
                 ["git", "clone", "--depth", "1", "--single-branch",
                  "--branch", BRANCH, REPO_URL, str(tmp_path)],
                 capture_output=True, timeout=60
             )
-            
+
             if result.returncode != 0:
                 print("⚠️  Could not fetch documentation updates")
                 return False
-            
+
             # Get commit hash
             result = subprocess.run(
                 ["git", "-C", str(tmp_path), "rev-parse", "HEAD"],
                 capture_output=True, text=True
             )
             commit_hash = result.stdout.strip() if result.returncode == 0 else None
-            
-            # Remove old docs and copy new
-            docs_path = Path(DOCS_PATH)
-            if docs_path.exists():
-                shutil.rmtree(docs_path)
-            
-            docs_path.mkdir(parents=True, exist_ok=True)
-            version_src = tmp_path / f"{version}.x"
-            version_dst = docs_path / f"{version}.x"
-            
-            if version_src.exists():
-                shutil.copytree(version_src, version_dst)
-                if commit_hash:
-                    (docs_path / ".git-hash").write_text(commit_hash)
-                
-                # Generate documentation index
-                generate_doc_index(docs_path, version)
-                
-                # Update config
-                config["last_sync"] = datetime.utcnow().isoformat() + "Z"
-                config["commit_hash"] = commit_hash
-                save_config(config)
-                
-                print(f"✅ Documentation updated ({commit_hash[:8]}...)")
-                return True
-            else:
-                print(f"⚠️  Version {version}.x not found")
-                return False
-                
+
+            # Remove old docs and copy all versions
+            if GLOBAL_DOCS_PATH.exists():
+                shutil.rmtree(GLOBAL_DOCS_PATH)
+
+            GLOBAL_DOCS_PATH.mkdir(parents=True, exist_ok=True)
+
+            for version in ["1", "2", "3", "4"]:
+                version_src = tmp_path / f"{version}.x"
+                version_dst = GLOBAL_DOCS_PATH / f"{version}.x"
+                if version_src.exists():
+                    shutil.copytree(version_src, version_dst)
+
+            if commit_hash:
+                (GLOBAL_DOCS_PATH / ".git-hash").write_text(commit_hash)
+
+            # Update per-project config
+            config["last_sync"] = datetime.utcnow().isoformat() + "Z"
+            save_config(config)
+
+            print(f"✅ Documentation updated ({commit_hash[:8]}...)")
+            print(f"📁 Location: {GLOBAL_DOCS_PATH}")
+            return True
+
     except subprocess.TimeoutExpired:
         print("⚠️  Sync timed out")
         return False
     except Exception as e:
         print(f"⚠️  Sync error: {e}")
         return False
-
-
-def generate_doc_index(docs_path, version):
-    """Generate INDEX.md for quick documentation reference."""
-    docs_dir = docs_path / f"{version}.x"
-    
-    if not docs_dir.exists():
-        return
-    
-    index_content = f"""# OctoberCMS {version}.x Documentation Index
-
-**Read:** `cat {docs_dir}/<path>`
-**Search:** `grep -r -l -i "term" {docs_dir}/ --include="*.md"`
-
-## Files
-
-"""
-    
-    categories = {}
-    for md_file in sorted(docs_dir.rglob("*.md")):
-        rel_path = md_file.relative_to(docs_dir)
-        category = rel_path.parts[0] if len(rel_path.parts) > 1 else "general"
-        if category not in categories:
-            categories[category] = []
-        categories[category].append(str(rel_path))
-    
-    for category in sorted(categories.keys()):
-        index_content += f"### {category.title()}\n"
-        for filepath in categories[category]:
-            index_content += f"- `{filepath}`\n"
-        index_content += "\n"
-    
-    index_path = docs_path / "INDEX.md"
-    with open(index_path, 'w') as f:
-        f.write(index_content)
 
 
 def main():

@@ -8,27 +8,49 @@ allowed-tools: Bash, Write, Read
 
 Quickly switch to a different OctoberCMS documentation version.
 
-## Usage
+## Step 1: Get Target Version
 
-If $ARGUMENTS is provided, use that version. Otherwise, prompt the user.
+If $ARGUMENTS is provided, use that version. Otherwise, ask the user which version they want:
+- **4.x** (Latest)
+- **3.x** (Stable)
+- **2.x** (Legacy)
+- **1.x** (Legacy)
 
-## Execution
-
-Run the docs manager script to switch versions:
+## Step 2: Download New Documentation
 
 ```bash
-python3 .claude-plugins/octobercms/scripts/docs_manager.py setup $VERSION
+VERSION=<selected version number>
+
+# Remove old docs
+rm -rf .claude/octobercms-docs
+
+# Clone fresh
+git clone --depth 1 --single-branch --branch develop \
+  https://github.com/octobercms/docs.git \
+  /tmp/octobercms-docs-temp
+
+# Copy selected version
+mkdir -p .claude/octobercms-docs
+cp -r /tmp/octobercms-docs-temp/${VERSION}.x .claude/octobercms-docs/
+
+# Save commit hash
+git -C /tmp/octobercms-docs-temp rev-parse HEAD > .claude/octobercms-docs/.git-hash
+
+# Cleanup
+rm -rf /tmp/octobercms-docs-temp
 ```
 
-Or if the script isn't available, fall back to manual process:
+## Step 3: Update Configuration
 
-1. Update `.claude/octobercms-config.json` with new version
-2. Remove old documentation: `rm -rf .claude/octobercms-docs`
-3. Clone new version documentation
+Update `.claude/octobercms-config.json` with:
+- New version
+- Updated last_sync timestamp
+- New commit hash
 
-## Post-Switch
+## Step 4: Confirm
 
-After switching:
-- Confirm the new version is active
-- Note any version-specific behavior changes
-- Suggest reviewing migration guides if upgrading/downgrading significantly
+```
+✅ Switched to OctoberCMS ${VERSION}.x
+
+📁 Documentation: .claude/octobercms-docs/${VERSION}.x/
+```

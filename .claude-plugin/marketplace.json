@@ -8,7 +8,7 @@
     {
       "name": "octobercms",
       "source": "./octobercms",
-      "description": "OctoberCMS development toolkit with version-specific documentation and skills"
+      "description": "OctoberCMS development toolkit with version-specific documentation and best practices"
     }
   ]
 }

@@ -5,92 +5,88 @@ description: OctoberCMS development guidance and best practices. Use when workin
 
 # OctoberCMS Development Skill
 
-## MANDATORY: Read Documentation First
+## When to Read Documentation
 
-**BEFORE answering ANY OctoberCMS question, you MUST:**
+**For questions/explanations:** Answer from knowledge. Reference docs if unsure.
 
-1. Read the config to get the version:
+**For code generation:** Read docs for version-specific syntax. Config formats vary between versions.
+
+### How to Read Docs
+
+1. Get the project's version:
    ```bash
    cat .claude/octobercms-config.json
    ```
 
-2. Read the documentation index:
+2. Docs are stored globally at `~/.claude/octobercms-docs/`. Explore:
    ```bash
-   cat .claude/octobercms-docs/INDEX.md
+   ls ~/.claude/octobercms-docs/${VERSION}.x/
    ```
 
-3. Search and read relevant documentation files:
-   ```bash
-   # Search for the topic
-   grep -r -l -i "SEARCH_TERM" .claude/octobercms-docs/ --include="*.md" | head -5
-   
-   # Read the most relevant file
-   cat .claude/octobercms-docs/${VERSION}.x/path/to/file.md
-   ```
+3. Search and read relevant files as needed.
 
-**DO NOT answer from memory. ALWAYS read the local docs first.**
+If no config exists, tell the user to run `/octobercms:setup` first.
 
-If no config exists, tell the user to run `/setup` first.
+## Autonomous Development Workflow
 
-## Documentation Structure
+When building plugins, follow this **build order**:
 
-After running `/setup`, docs are at `.claude/octobercms-docs/${VERSION}.x/`:
+1. **Plugin** → Create plugin structure
+2. **Models** → Define data structures and relationships
+3. **Migrations** → Create database tables
+4. **Controllers** → Backend CRUD interfaces
+5. **Components** → Frontend integration (if needed)
 
-| Topic | File Path |
-|-------|-----------|
-| Plugin registration | `plugin/registration.md` |
-| Backend forms | `plugin/backend/forms.md` |
-| Backend lists | `plugin/backend/lists.md` |
-| Relations | `plugin/backend/relations.md` |
-| Models | `database/model.md` |
-| Components | `cms/components.md` |
-| AJAX handlers | `ajax/handlers.md` |
-| Themes | `themes/development.md` |
-| Console commands | `console/commands.md` |
-| Pages & layouts | `cms/pages.md`, `cms/layouts.md` |
-| Partials | `cms/partials.md` |
-| Tailor (4.x only) | `tailor/introduction.md` |
+### Artisan Scaffolding Commands
 
-## Workflow
+Common commands (availability varies by version):
 
-1. **User asks question** → 
-2. **Read config** (get version) → 
-3. **Search docs** (find relevant files) → 
-4. **Read docs** (load content) → 
-5. **Answer based on docs** (cite what you read)
-
-## Example
-
-User: "How do I create a backend form?"
-
-You should:
 ```bash
-# 1. Get version
-cat .claude/octobercms-config.json
-# Shows: version "4.x"
+# Create plugin structure
+php artisan create:plugin Author.PluginName
 
-# 2. Read the forms documentation
-cat .claude/octobercms-docs/4.x/plugin/backend/forms.md
+# Create model (includes migration)
+php artisan create:model Author.PluginName ModelName
 
-# 3. Now answer based on what you read
+# Create controller
+php artisan create:controller Author.PluginName ControllerName
+
+# Create component
+php artisan create:component Author.PluginName ComponentName
+
+# Create standalone migration
+php artisan create:migration Author.PluginName create_tablename_table
 ```
 
-## Version Differences (Quick Reference)
+Other commands may be available: `create:command`, `create:formwidget`, `create:filterwidget`, `create:reportwidget`, `create:job`, `create:seeder`, `create:test`, `create:factory`, `create:contentfield`.
 
-Only use this if docs are unavailable:
+Run `php artisan list create` to see all available scaffolding commands for your version.
 
-| Feature | 4.x | 3.x | 2.x | 1.x |
-|---------|-----|-----|-----|-----|
-| Laravel | 11 | 9 | 6 | 5 |
-| PHP | 8.2+ | 8.0+ | 7.4+ | 7.0+ |
-| JS Framework | Snowboard | Storm | Storm | jQuery |
-| Tailor CMS | ✓ | - | - | - |
-| Multisite | ✓ | - | - | - |
+### Config Files to Customize
+
+After scaffolding, customize these files:
+- `models/modelname/fields.yaml` → Form field definitions
+- `models/modelname/columns.yaml` → List column definitions
+- `controllers/controllername/config_form.yaml` → Form behavior config
+- `controllers/controllername/config_list.yaml` → List behavior config
+
+### Best Practices for Autonomous Work
+
+1. **Use scaffolding** - Run artisan commands to create files, then customize
+2. **Follow conventions** - Namespace, file locations, and naming must match OctoberCMS standards
+3. **Read docs for syntax** - Config formats vary by version, verify in docs
 
 ## Code Conventions
 
-When generating code, follow OctoberCMS patterns:
-- Plugin namespace: `Author\PluginName`
-- Use `plugins_path()`, `themes_path()` helpers
-- Use behaviors for extensibility
-- Always use `Lang::get()` for strings
+**Default standards:** Follow the official OctoberCMS developer guidelines.
+
+Read the guidelines: `.claude-plugin/octobercms/references/developer-guidelines.md`
+
+These conventions cover:
+- Naming (vendors, packages, variables, classes, models, controllers, components)
+- Database table and column naming
+- PSR exceptions specific to OctoberCMS
+- Event naming patterns
+- View file naming
+
+**Override behavior:** If a team preferences plugin is installed, team-specific conventions take priority over these defaults.

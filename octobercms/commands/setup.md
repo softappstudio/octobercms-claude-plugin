@@ -111,8 +111,7 @@ EOF
 Confirm setup completion with:
 - Selected version
 - Documentation path
-- Suggest running `/sync-docs` periodically to keep docs updated
-- Suggest trying `/october help [topic]` to search the documentation
+- Auto-sync settings
 
 **Example output:**
 ```
@@ -120,5 +119,4 @@ Confirm setup completion with:
 
 📁 Documentation: .claude/octobercms-docs/${VERSION}.x/
 🔄 Auto-sync: Enabled (every 7 days)
-❓ Run /october help [topic] to search docs
 ```
