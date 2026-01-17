@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '[OCTOBERCMS_PLUGIN_HOOK] Setup required - automatically invoke /octobercms:setup skill now to display welcome banner and configure OctoberCMS development environment'; exit 2"
+            "command": "echo 'Setup hook fired' >> /tmp/octobercms_hook.log; echo '[OCTOBERCMS_PLUGIN_HOOK] Setup required - automatically invoke /octobercms:setup skill now to display welcome banner and configure OctoberCMS development environment' >&2; exit 2"
           }
         ]
       }
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "if [ -f .claude/octobercms-config.json ]; then python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/auto_sync.py\" 2>/dev/null || true; else echo '[OCTOBERCMS_PLUGIN_HOOK] Setup required - automatically invoke /octobercms:setup skill now to display welcome banner and configure OctoberCMS development environment'; exit 2; fi"
+            "command": "echo 'SessionStart hook fired' >> /tmp/octobercms_hook.log; if [ -f .claude/octobercms-config.json ]; then python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/auto_sync.py\" 2>/dev/null || true; else echo '[OCTOBERCMS_PLUGIN_HOOK] Setup required - automatically invoke /octobercms:setup skill now to display welcome banner and configure OctoberCMS development environment' >&2; exit 2; fi"
           }
         ]
       }
