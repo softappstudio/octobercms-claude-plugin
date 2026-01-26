@@ -1,0 +1,16 @@
+{
+  "description": "OctoberCMS documentation auto-sync",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f .claude/octobercms-config.json ]; then python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/auto_sync.py\"; fi"
+          }
+        ]
+      }
+    ]
+  }
+}

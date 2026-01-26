@@ -1,0 +1,17 @@
+{
+  "name": "softappstudio",
+  "owner": {
+    "name": "Soft App Studio",
+    "email": "info@softappstudio.com"
+  },
+  "metadata": {
+    "description": "OctoberCMS development tools for Claude Code",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "octobercms",
+      "source": "./octobercms"
+    }
+  ]
+}

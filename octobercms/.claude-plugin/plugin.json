@@ -1,0 +1,11 @@
+{
+  "name": "octobercms",
+  "description": "OctoberCMS development toolkit - version-specific documentation and best practices for building plugins and themes",
+  "version": "1.0.0",
+  "author": {
+    "name": "SoftAppStudio",
+    "email": "info@softappstudio.com"
+  },
+  "repository": "https://github.com/softappstudio/octobercms-claude-plugin",
+  "keywords": ["octobercms", "laravel", "cms", "php"]
+}
