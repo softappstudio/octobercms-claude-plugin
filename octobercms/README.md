@@ -6,7 +6,8 @@ A Claude Code plugin for OctoberCMS development with version-specific documentat
 
 - **Auto-Detect Version** - Automatically detects your OctoberCMS version via `php artisan october:about`
 - **Global Documentation** - Docs stored at `~/.claude/octobercms-docs/` (shared across projects)
-- **Auto-Sync** - Checks for doc updates on every session start
+- **Community Answers** - 530+ solved topics from the official OctoberCMS forum as a searchable knowledge base
+- **Auto-Sync** - Checks for doc and community answer updates on every session start
 - **On-Demand Downloads** - Only downloads versions you need
 - **Version Switching** - Easily switch between 1.x, 2.x, 3.x, 4.x
 
@@ -48,9 +49,10 @@ Per-project config stored in `.claude/octobercms-config.json`:
 ```json
 {
   "version": "4.x",
-  "last_sync": "2026-01-19T12:00:00Z",
+  "last_sync": "2026-02-01T00:00:00Z",
   "auto_sync": true,
-  "auto_sync_mode": "auto"
+  "auto_sync_mode": "auto",
+  "community_answers": true
 }
 ```
 
@@ -64,24 +66,30 @@ Per-project config stored in `.claude/octobercms-config.json`:
 
 ## Documentation Storage
 
-- **Global:** `~/.claude/octobercms-docs/`
+- **Global:** `~/.claude/octobercms-docs/` and `~/.claude/octobercms-community-answers/`
 - **Versions:** Downloaded on-demand (only what you need)
 - **Shared:** All projects use the same docs (no duplication)
 
 ```
-~/.claude/octobercms-docs/
-├── 3.x/          # Downloaded when needed
-├── 4.x/          # Downloaded when needed
-└── .git-hash     # For sync tracking
+~/.claude/
+├── octobercms-docs/
+│   ├── 3.x/          # Downloaded when needed
+│   ├── 4.x/          # Downloaded when needed
+│   └── .git-hash     # For sync tracking
+└── octobercms-community-answers/
+    ├── need-help/     # 530+ solved topics
+    ├── questions/
+    ├── tips-and-tricks/
+    └── known-issues/
 ```
 
 ## Skills (Auto-Invoked)
 
 The plugin includes a skill that Claude automatically uses:
 
-- **octobercms-core** - Build order, artisan commands, best practices
+- **octobercms-core** - Build order, artisan commands, best practices, community answer search
 
-The skill auto-triggers based on context (OctoberCMS files, directories, mentions).
+The skill auto-triggers via `.claude/CLAUDE.md` (added during setup) and context detection.
 
 ## Supported Versions
 

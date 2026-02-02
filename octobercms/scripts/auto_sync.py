@@ -22,6 +22,9 @@ GLOBAL_DOCS_PATH = Path.home() / ".claude" / "octobercms-docs"
 REPO_URL = "https://github.com/octobercms/docs.git"
 BRANCH = "develop"
 
+# Community answers
+COMMUNITY_ANSWERS_PATH = Path.home() / ".claude" / "octobercms-community-answers"
+
 
 def get_config():
     """Load existing configuration."""
@@ -125,6 +128,19 @@ def output_message(message):
     print(json_module.dumps({"systemMessage": message}))
 
 
+def sync_community_answers():
+    """Pull latest community answers if installed."""
+    if not (COMMUNITY_ANSWERS_PATH / ".git").exists():
+        return
+    try:
+        subprocess.run(
+            ["git", "-C", str(COMMUNITY_ANSWERS_PATH), "pull", "--ff-only"],
+            capture_output=True, timeout=30
+        )
+    except (subprocess.TimeoutExpired, subprocess.SubprocessError):
+        pass
+
+
 def main():
     # Check if we're in an OctoberCMS project
     config = get_config()
@@ -136,26 +152,21 @@ def main():
     if not config.get("auto_sync", True):
         return
 
-    # Check for remote updates
+    auto_sync_mode = config.get("auto_sync_mode", "auto")
+
+    # Check for docs updates
     local_hash = get_local_hash()
     remote_hash = get_remote_hash()
 
-    if not remote_hash:
-        # Offline - can't check
-        return
-
-    if local_hash == remote_hash:
-        # Already up to date
-        return
-
-    # Updates available
-    auto_sync_mode = config.get("auto_sync_mode", "auto")
-
     if auto_sync_mode == "auto":
-        if do_sync(config):
-            output_message("OctoberCMS documentation updated.")
+        if remote_hash and local_hash != remote_hash:
+            if do_sync(config):
+                output_message("OctoberCMS documentation updated.")
+        if config.get("community_answers", True):
+            sync_community_answers()
     elif auto_sync_mode == "notify":
-        output_message("OctoberCMS documentation updates available. Run /octobercms:sync-docs to update.")
+        if remote_hash and local_hash != remote_hash:
+            output_message("OctoberCMS documentation updates available. Run /octobercms:sync-docs to update.")
 
 
 if __name__ == "__main__":

@@ -1,17 +1,19 @@
 ---
 name: octobercms-core
-description: OctoberCMS development guidance and best practices. Use when working with OctoberCMS projects, plugins, themes, or when the user mentions October, OctoberCMS, or is working with files in plugins/, themes/, or modules/ directories typical of OctoberCMS structure.
+description: OctoberCMS development guidance and best practices. Auto-trigger when the project has a .claude/octobercms-config.json file, or when working with plugins/, themes/, or modules/ directories, or when the user mentions October, OctoberCMS, plugin, component, partial, layout, theme, tailor, blueprint, repeater, richeditor, mediafinder, backend form, backend list, or artisan october.
 ---
 
 # OctoberCMS Development Skill
 
-## When to Read Documentation
+## Knowledge Sources
 
-**For questions/explanations:** Answer from knowledge. Reference docs if unsure.
+**IMPORTANT: Always search official docs and community answers first when troubleshooting or answering questions. Then explore the project codebase for context.**
 
-**For code generation:** Read docs for version-specific syntax. Config formats vary between versions.
+Use your judgment on which to search based on the question. For errors and unexpected behavior, community answers are more likely to help. For syntax and API usage, docs are more likely to help. Search both only if the first source doesn't fully answer the question.
 
-### How to Read Docs
+### Official Documentation
+
+Version-specific reference for syntax, config formats, and API.
 
 1. Get the project's version:
    ```bash
@@ -26,6 +28,31 @@ description: OctoberCMS development guidance and best practices. Use when workin
 3. Search and read relevant files as needed.
 
 If no config exists, tell the user to run `/octobercms:setup` first.
+
+### Community Answers
+
+530+ solved topics from the official OctoberCMS forum. Real-world problems, errors, workarounds, and edge cases.
+
+**Location:** `~/.claude/octobercms-community-answers/`
+
+First check if enabled for this project: read `community_answers` from `.claude/octobercms-config.json`. If `false` or the folder `~/.claude/octobercms-community-answers/` doesn't exist, skip community answers and rely on docs and general knowledge.
+
+Organized by category folders: `need-help/`, `questions/`, `tips-and-tricks/`, `known-issues/`.
+
+**How to search:**
+
+1. Grep for keywords related to the problem across the folder
+2. Scan matching filenames — the slugs are descriptive
+3. Read the most relevant files (they're small — reading 5-10 is fine)
+4. If the first grep is too broad, narrow with more specific terms or combine keywords
+
+**How to use results:**
+
+- **Always attribute the answer:** mention who answered it (the "Answered by" field)
+- **Always cite the source:** include the URL from the file metadata
+- If multiple topics match, ask follow-up questions to narrow down which applies
+
+If no community answers match, fall back to docs and general knowledge. Not every problem has been asked before.
 
 ## Autonomous Development Workflow
 

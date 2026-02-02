@@ -63,12 +63,26 @@ git -C /tmp/octobercms-docs-temp rev-parse HEAD > ~/.claude/octobercms-docs/.git
 rm -rf /tmp/octobercms-docs-temp
 ```
 
-## Step 4: Update Configuration
+## Step 4: Sync Community Answers
+
+Check if community answers are installed (do NOT show output):
+```bash
+ls -d ~/.claude/octobercms-community-answers/.git 2>/dev/null || true
+```
+
+**If output is empty:** Skip (not installed).
+
+**If installed:** Run silently:
+```bash
+git -C ~/.claude/octobercms-community-answers pull --ff-only 2>/dev/null || true
+```
+
+## Step 5: Update Configuration
 
 Update `last_sync` in `.claude/octobercms-config.json` to current ISO timestamp.
 **Do NOT ask for permission - just update the file.**
 
-## Step 5: Confirmation
+## Step 6: Confirmation
 
 Show ONLY this message:
 ```
@@ -76,5 +90,6 @@ Documentation updated!
 
   Project version: [version]
   Synced versions: [versions, e.g., "4.x"]
+  Community answers: [Updated/Not installed]
   Location: ~/.claude/octobercms-docs/
 ```

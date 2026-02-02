@@ -10,6 +10,7 @@ allowed-tools: Bash, Write, Read
 2. Do NOT add `|| echo "..."` fallbacks to any command
 3. Empty output = file/command not found - interpret accordingly
 4. Show user-friendly messages based on results, not raw command output
+5. Execute ALL steps in order (1-10). Do NOT skip any step.
 
 ## Step 1: Welcome Banner
 
@@ -37,16 +38,23 @@ Check if config exists (do NOT add echo fallbacks):
 test -f .claude/octobercms-config.json && cat .claude/octobercms-config.json || true
 ```
 
-**If output contains JSON:** Show friendly message:
+**If output contains JSON:** Show friendly message and ask:
 ```
 Existing configuration found:
   Version: [version from config]
   Auto-sync: [enabled/disabled]
 
-Would you like to reconfigure? (y/N)
+Would you like to reconfigure?
+
+  1. Yes - Go through full setup again
+  2. No - Keep current settings
 ```
 
-**If no config:** Show: `Setting up OctoberCMS development environment...` and proceed.
+**Present Yes as the first option.**
+
+If user says **No**: skip Steps 3-7 (version, docs download, community answers, auto-sync) but **still run Step 8** (CLAUDE.md update). Then show `Configuration unchanged.` and stop.
+
+**If no config:** Show: `Setting up OctoberCMS development environment...` and proceed through all steps.
 
 ## Step 3: Auto-Detect Version
 
@@ -122,7 +130,60 @@ Auto-sync documentation updates?
 
 Default to "Auto" if user just presses enter.
 
-## Step 7: Save Configuration
+## Step 7: Download Community Answers
+
+Ask the user:
+```
+Install community answers knowledge base?
+530+ solved topics from the official OctoberCMS forum to help troubleshoot issues.
+
+  1. Yes (recommended)
+  2. No
+
+Enter choice (1-2):
+```
+
+Default to "Yes" if user just presses enter.
+
+**If Yes:**
+
+Check if already exists (do NOT add echo fallbacks):
+```bash
+ls -d ~/.claude/octobercms-community-answers 2>/dev/null || true
+```
+
+If output shows the path: Show: `Community answers already available.`
+
+If output is empty:
+1. Show: `Downloading community answers...`
+2. Run:
+```bash
+git clone --depth 1 \
+  https://github.com/softappstudio/octobercms-community-answers.git \
+  ~/.claude/octobercms-community-answers
+```
+3. Show: `Community answers downloaded.`
+
+**If No:** Show: `Skipped community answers.` and continue. Save this choice in config (see Step 9).
+
+## Step 8: Update CLAUDE.md
+
+Check if `.claude/CLAUDE.md` exists and read it.
+
+- **If it contains "octobercms-core":** Check if the version matches. If it says a different version than `${VERSION}.x`, replace that line with the correct version. Do NOT append a duplicate block.
+- **If it exists but does NOT contain "octobercms-core":** Append the following block to the end (do NOT overwrite existing content).
+- **If it does not exist:** Create it with **only** the block below.
+
+```markdown
+
+# OctoberCMS Project
+
+This is an OctoberCMS ${VERSION}.x project. Always use the octobercms-core skill for any development questions, errors, or code generation.
+```
+
+**Do NOT ask for permission — just do it. Do NOT add any extra text, disclaimers, or comments. Write EXACTLY the block above, nothing more.**
+
+## Step 9: Save Configuration
 
 ```bash
 mkdir -p .claude
@@ -134,16 +195,19 @@ Then write the config file with the collected values:
   "version": "${VERSION}.x",
   "last_sync": "${ISO_TIMESTAMP}",
   "auto_sync": true,
-  "auto_sync_mode": "auto"
+  "auto_sync_mode": "auto",
+  "community_answers": true
 }
 ```
 
-Adjust `auto_sync` and `auto_sync_mode` based on user choices:
-- Auto: `auto_sync: true`, `auto_sync_mode: "auto"`
-- Notify: `auto_sync: true`, `auto_sync_mode: "notify"`
-- Off: `auto_sync: false`, `auto_sync_mode: "off"`
+Adjust values based on user choices:
+- Auto-sync Auto: `auto_sync: true`, `auto_sync_mode: "auto"`
+- Auto-sync Notify: `auto_sync: true`, `auto_sync_mode: "notify"`
+- Auto-sync Off: `auto_sync: false`, `auto_sync_mode: "off"`
+- Community answers Yes: `community_answers: true`
+- Community answers No: `community_answers: false`
 
-## Step 8: Confirmation
+## Step 10: Confirmation
 
 Show success message:
 ```
@@ -151,6 +215,7 @@ Setup complete!
 
   Project version: ${VERSION}.x
   Documentation: ~/.claude/octobercms-docs/${VERSION}.x/
+  Community answers: [Installed/Not installed]
   Auto-sync: [Enabled/Notify only/Disabled]
 
 Commands:
